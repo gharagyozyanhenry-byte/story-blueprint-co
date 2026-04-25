@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/SectionLabel";
+import heroClassroom from "@/assets/hero-classroom.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
