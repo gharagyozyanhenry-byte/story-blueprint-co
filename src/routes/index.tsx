@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/SectionLabel";
+import heroClassroom from "@/assets/hero-classroom.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -62,16 +63,26 @@ function Home() {
           </div>
 
           <div className="relative">
-            <div className="rounded-xl border border-gold/30 bg-card/60 p-8 shadow-[0_0_60px_-20px_oklch(0.78_0.13_80/0.3)] backdrop-blur">
-              <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Today's concept</p>
-              <p className="mt-6 font-display text-5xl text-gold">
-                ∫ xe<sup>x</sup> dx
-              </p>
-              <div className="my-6 h-px bg-border" />
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                Integration by parts: ∫u dv = uv − ∫v du. Let u = x and dv = eˣ dx — a powerful
-                technique that transforms complex integrals into manageable steps.
-              </p>
+            <div className="relative overflow-hidden rounded-xl border border-gold/30 shadow-[0_0_80px_-20px_oklch(0.78_0.13_80/0.4)]">
+              <img
+                src={heroClassroom}
+                alt="Dimly lit math classroom with chalkboard full of calculus equations"
+                width={1280}
+                height={1280}
+                className="h-[420px] w-full object-cover md:h-[520px]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/20" />
+              <div className="absolute inset-x-0 bottom-0 p-8">
+                <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Today's concept</p>
+                <p className="mt-3 font-display text-4xl text-gold md:text-5xl">
+                  ∫ xe<sup>x</sup> dx
+                </p>
+                <div className="my-4 h-px bg-border" />
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  Integration by parts: ∫u dv = uv − ∫v du. Let u = x and dv = eˣ dx — a powerful
+                  technique that transforms complex integrals into manageable steps.
+                </p>
+              </div>
             </div>
           </div>
         </div>
