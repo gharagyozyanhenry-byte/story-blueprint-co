@@ -3,6 +3,7 @@ import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/r
 import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { CursorTrail } from "@/components/CursorTrail";
 
 function NotFoundComponent() {
   return (
@@ -77,6 +78,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
 function RootComponent() {
   return (
     <div className="flex min-h-screen flex-col">
+      <CursorTrail />
       <SiteHeader />
       <main className="flex-1">
         <Outlet />
