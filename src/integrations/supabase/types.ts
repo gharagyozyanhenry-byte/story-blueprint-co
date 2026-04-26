@@ -44,6 +44,33 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_concepts: {
+        Row: {
+          concept_date: string
+          created_at: string
+          explanation: string
+          formula: string
+          id: string
+          title: string
+        }
+        Insert: {
+          concept_date: string
+          created_at?: string
+          explanation: string
+          formula: string
+          id?: string
+          title: string
+        }
+        Update: {
+          concept_date?: string
+          created_at?: string
+          explanation?: string
+          formula?: string
+          id?: string
+          title?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
