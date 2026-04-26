@@ -64,8 +64,8 @@ Deno.serve(async (req) => {
       ]
         .filter(Boolean)
         .join("\n"),
-      start: { dateTime: start.toISOString() },
-      end: { dateTime: end.toISOString() },
+      start: { dateTime: start.toISOString(), timeZone: "America/Los_Angeles" },
+      end: { dateTime: end.toISOString(), timeZone: "America/Los_Angeles" },
       attendees: [{ email: body.email, displayName: body.name }],
       reminders: { useDefault: true },
     };
