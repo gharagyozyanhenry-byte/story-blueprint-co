@@ -173,20 +173,63 @@ function Contact() {
           </div>
         </div>
 
-        <div>
-          <label className="mb-2 block text-xs uppercase tracking-[0.18em] text-muted-foreground">
-            Preferred Date & Time
-          </label>
-          <input
-            type="datetime-local"
-            name="preferred_at"
-            required
-            defaultValue={defaultPreferred()}
-            className="w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground focus:border-gold focus:outline-none"
-          />
-          <p className="mt-1 text-xs text-muted-foreground">
-            30-minute consultation. I'll confirm by email.
-          </p>
+        <div className="grid gap-5 md:grid-cols-2">
+          <div>
+            <label className="mb-2 block text-xs uppercase tracking-[0.18em] text-muted-foreground">
+              Preferred Date
+            </label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <button
+                  type="button"
+                  className={cn(
+                    "flex w-full items-center justify-between rounded-md border border-input bg-background px-4 py-3 text-sm focus:border-gold focus:outline-none",
+                    !date && "text-muted-foreground",
+                  )}
+                >
+                  {date ? format(date, "EEEE, MMMM d, yyyy") : "Pick a date"}
+                  <CalendarIcon className="ml-2 h-4 w-4 opacity-60" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+
+          <div>
+            <label className="mb-2 block text-xs uppercase tracking-[0.18em] text-muted-foreground">
+              Preferred Time
+            </label>
+            <select
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              className="w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground focus:border-gold focus:outline-none"
+            >
+              {TIME_SLOTS.map((t) => {
+                const [h, m] = t.split(":").map(Number);
+                const label = new Date(2000, 0, 1, h, m).toLocaleTimeString([], {
+                  hour: "numeric",
+                  minute: "2-digit",
+                });
+                return (
+                  <option key={t} value={t}>
+                    {label}
+                  </option>
+                );
+              })}
+            </select>
+            <p className="mt-1 text-xs text-muted-foreground">
+              30-minute consultation. I'll confirm by email.
+            </p>
+          </div>
         </div>
 
         <div>
