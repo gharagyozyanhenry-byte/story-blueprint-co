@@ -37,7 +37,21 @@ const schema = z.object({
   phone: z.string().trim().max(40).optional().or(z.literal("")),
   subject_area: z.string().max(80).optional().or(z.literal("")),
   message: z.string().trim().min(1, "Tell me a bit about your goals").max(5000),
+  preferred_at: z
+    .string()
+    .min(1, "Please pick a preferred date and time")
+    .refine((v) => !Number.isNaN(Date.parse(v)), "Invalid date/time")
+    .refine((v) => new Date(v).getTime() > Date.now(), "Pick a time in the future"),
 });
+
+// Default the picker to tomorrow at 5pm local
+function defaultPreferred(): string {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  d.setHours(17, 0, 0, 0);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
 
 function Contact() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
@@ -53,6 +67,7 @@ function Contact() {
       phone: formData.get("phone") || "",
       subject_area: formData.get("subject_area") || "",
       message: formData.get("message"),
+      preferred_at: formData.get("preferred_at"),
     });
 
     if (!parsed.success) {
@@ -69,15 +84,31 @@ function Contact() {
       message: parsed.data.message,
     };
 
+    // 1) Save submission to database
     const { error: dbError } = await supabase.from("contact_submissions").insert(payload);
     if (dbError) {
       setStatus("error");
-      setError("Something went wrong. Please try again or email directly.");
+      setError("Something went wrong saving your message. Please try again.");
       return;
     }
+
+    // 2) Create a Google Calendar event for the consultation
+    const preferredIso = new Date(parsed.data.preferred_at).toISOString();
+    const { error: fnError } = await supabase.functions.invoke("create-consultation", {
+      body: { ...payload, preferred_at: preferredIso },
+    });
+    if (fnError) {
+      // Submission saved but calendar failed — still treat as partial success
+      setStatus("success");
+      setError("Message received, but I couldn't auto-book the slot. I'll reach out to confirm.");
+      (e.target as HTMLFormElement).reset();
+      return;
+    }
+
     setStatus("success");
     (e.target as HTMLFormElement).reset();
   }
+
 
   return (
     <section className="mx-auto max-w-5xl px-6 py-24">
@@ -116,6 +147,22 @@ function Contact() {
               ))}
             </select>
           </div>
+        </div>
+
+        <div>
+          <label className="mb-2 block text-xs uppercase tracking-[0.18em] text-muted-foreground">
+            Preferred Date & Time
+          </label>
+          <input
+            type="datetime-local"
+            name="preferred_at"
+            required
+            defaultValue={defaultPreferred()}
+            className="w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground focus:border-gold focus:outline-none"
+          />
+          <p className="mt-1 text-xs text-muted-foreground">
+            30-minute consultation. I'll confirm by email.
+          </p>
         </div>
 
         <div>
