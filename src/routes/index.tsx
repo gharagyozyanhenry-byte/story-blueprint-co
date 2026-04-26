@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { SectionLabel } from "@/components/SectionLabel";
+import { supabase } from "@/integrations/supabase/client";
 import heroClassroom from "@/assets/hero-classroom.jpg";
 
 export const Route = createFileRoute("/")({
@@ -28,7 +30,36 @@ const stats = [
   { value: "4+", label: "Subjects Covered" },
 ];
 
+const FALLBACK_CONCEPT = {
+  formula: "∫ xeˣ dx",
+  title: "Integration by Parts",
+  explanation:
+    "Integration by parts: ∫u dv = uv − ∫v du. Let u = x and dv = eˣ dx — a powerful technique that transforms complex integrals into manageable steps.",
+};
+
 function Home() {
+  const [concept, setConcept] = useState(FALLBACK_CONCEPT);
+
+  useEffect(() => {
+    let active = true;
+    supabase.functions
+      .invoke("daily-concept")
+      .then(({ data, error }) => {
+        if (!active || error || !data) return;
+        if (data.formula && data.title && data.explanation) {
+          setConcept({
+            formula: data.formula,
+            title: data.title,
+            explanation: data.explanation,
+          });
+        }
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <>
       {/* Hero */}
@@ -75,12 +106,12 @@ function Home() {
               <div className="absolute inset-x-0 bottom-0 p-8">
                 <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Today's concept</p>
                 <p className="mt-3 font-display text-4xl text-gold md:text-5xl">
-                  ∫ xe<sup>x</sup> dx
+                  {concept.formula}
                 </p>
                 <div className="my-4 h-px bg-border" />
+                <p className="mb-2 text-sm font-medium text-foreground">{concept.title}</p>
                 <p className="text-sm leading-relaxed text-muted-foreground">
-                  Integration by parts: ∫u dv = uv − ∫v du. Let u = x and dv = eˣ dx — a powerful
-                  technique that transforms complex integrals into manageable steps.
+                  {concept.explanation}
                 </p>
               </div>
             </div>
