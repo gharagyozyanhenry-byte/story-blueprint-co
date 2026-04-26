@@ -56,6 +56,8 @@ const TIME_SLOTS = [
   "17:00", "18:00", "19:00", "20:00",
 ];
 
+const TZ = "America/Los_Angeles"; // Glendale, CA
+
 function defaultDate(): Date {
   const d = new Date();
   d.setDate(d.getDate() + 1);
@@ -63,11 +65,33 @@ function defaultDate(): Date {
   return d;
 }
 
+// Build a UTC instant that corresponds to the given wall-clock time in Glendale.
+// We pick Y/M/D from the selected calendar date (interpreted as a local civil date)
+// and H/M from the time slot, then resolve them in America/Los_Angeles.
 function combine(date: Date, time: string): Date {
   const [h, m] = time.split(":").map(Number);
-  const d = new Date(date);
-  d.setHours(h, m, 0, 0);
-  return d;
+  const y = date.getFullYear();
+  const mo = date.getMonth() + 1;
+  const d = date.getDate();
+
+  // Find the UTC offset (in minutes) that America/Los_Angeles has at this wall time.
+  // Trick: format a guess UTC instant as LA time and compare back.
+  const guess = Date.UTC(y, mo - 1, d, h, m, 0);
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: TZ,
+    year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", second: "2-digit",
+    hour12: false,
+  }).formatToParts(new Date(guess));
+  const map: Record<string, string> = {};
+  for (const p of parts) map[p.type] = p.value;
+  const asLA = Date.UTC(
+    Number(map.year), Number(map.month) - 1, Number(map.day),
+    Number(map.hour) === 24 ? 0 : Number(map.hour),
+    Number(map.minute), Number(map.second),
+  );
+  const offsetMs = guess - asLA; // how much LA is behind UTC at that time
+  return new Date(guess + offsetMs);
 }
 
 function Contact() {
@@ -206,7 +230,7 @@ function Contact() {
 
           <div>
             <label className="mb-2 block text-xs uppercase tracking-[0.18em] text-muted-foreground">
-              Preferred Time
+              Preferred Time (Glendale, PT)
             </label>
             <select
               value={time}
@@ -221,13 +245,13 @@ function Contact() {
                 });
                 return (
                   <option key={t} value={t}>
-                    {label}
+                    {label} PT
                   </option>
                 );
               })}
             </select>
             <p className="mt-1 text-xs text-muted-foreground">
-              30-minute consultation. I'll confirm by email.
+              30-minute consultation in Glendale time (Pacific). I'll confirm by email.
             </p>
           </div>
         </div>
