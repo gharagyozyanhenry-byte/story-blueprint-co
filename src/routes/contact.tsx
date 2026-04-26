@@ -1,8 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import { SectionLabel } from "@/components/SectionLabel";
 import { supabase } from "@/integrations/supabase/client";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -45,21 +50,42 @@ const schema = z.object({
 });
 
 // Default the picker to tomorrow at 5pm local
-function defaultPreferred(): string {
+const TIME_SLOTS = [
+  "09:00", "10:00", "11:00", "12:00",
+  "13:00", "14:00", "15:00", "16:00",
+  "17:00", "18:00", "19:00", "20:00",
+];
+
+function defaultDate(): Date {
   const d = new Date();
   d.setDate(d.getDate() + 1);
-  d.setHours(17, 0, 0, 0);
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+function combine(date: Date, time: string): Date {
+  const [h, m] = time.split(":").map(Number);
+  const d = new Date(date);
+  d.setHours(h, m, 0, 0);
+  return d;
 }
 
 function Contact() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
+  const [date, setDate] = useState<Date | undefined>(defaultDate());
+  const [time, setTime] = useState<string>("17:00");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
+
+    if (!date) {
+      setError("Please pick a date.");
+      return;
+    }
+    const preferred = combine(date, time);
+
     const formData = new FormData(e.currentTarget);
     const parsed = schema.safeParse({
       name: formData.get("name"),
@@ -67,7 +93,7 @@ function Contact() {
       phone: formData.get("phone") || "",
       subject_area: formData.get("subject_area") || "",
       message: formData.get("message"),
-      preferred_at: formData.get("preferred_at"),
+      preferred_at: preferred.toISOString(),
     });
 
     if (!parsed.success) {
@@ -84,7 +110,6 @@ function Contact() {
       message: parsed.data.message,
     };
 
-    // 1) Save submission to database
     const { error: dbError } = await supabase.from("contact_submissions").insert(payload);
     if (dbError) {
       setStatus("error");
@@ -92,13 +117,10 @@ function Contact() {
       return;
     }
 
-    // 2) Create a Google Calendar event for the consultation
-    const preferredIso = new Date(parsed.data.preferred_at).toISOString();
     const { error: fnError } = await supabase.functions.invoke("create-consultation", {
-      body: { ...payload, preferred_at: preferredIso },
+      body: { ...payload, preferred_at: parsed.data.preferred_at },
     });
     if (fnError) {
-      // Submission saved but calendar failed — still treat as partial success
       setStatus("success");
       setError("Message received, but I couldn't auto-book the slot. I'll reach out to confirm.");
       (e.target as HTMLFormElement).reset();
@@ -107,6 +129,8 @@ function Contact() {
 
     setStatus("success");
     (e.target as HTMLFormElement).reset();
+    setDate(defaultDate());
+    setTime("17:00");
   }
 
 
@@ -149,20 +173,63 @@ function Contact() {
           </div>
         </div>
 
-        <div>
-          <label className="mb-2 block text-xs uppercase tracking-[0.18em] text-muted-foreground">
-            Preferred Date & Time
-          </label>
-          <input
-            type="datetime-local"
-            name="preferred_at"
-            required
-            defaultValue={defaultPreferred()}
-            className="w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground focus:border-gold focus:outline-none"
-          />
-          <p className="mt-1 text-xs text-muted-foreground">
-            30-minute consultation. I'll confirm by email.
-          </p>
+        <div className="grid gap-5 md:grid-cols-2">
+          <div>
+            <label className="mb-2 block text-xs uppercase tracking-[0.18em] text-muted-foreground">
+              Preferred Date
+            </label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <button
+                  type="button"
+                  className={cn(
+                    "flex w-full items-center justify-between rounded-md border border-input bg-background px-4 py-3 text-sm focus:border-gold focus:outline-none",
+                    !date && "text-muted-foreground",
+                  )}
+                >
+                  {date ? format(date, "EEEE, MMMM d, yyyy") : "Pick a date"}
+                  <CalendarIcon className="ml-2 h-4 w-4 opacity-60" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+
+          <div>
+            <label className="mb-2 block text-xs uppercase tracking-[0.18em] text-muted-foreground">
+              Preferred Time
+            </label>
+            <select
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              className="w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground focus:border-gold focus:outline-none"
+            >
+              {TIME_SLOTS.map((t) => {
+                const [h, m] = t.split(":").map(Number);
+                const label = new Date(2000, 0, 1, h, m).toLocaleTimeString([], {
+                  hour: "numeric",
+                  minute: "2-digit",
+                });
+                return (
+                  <option key={t} value={t}>
+                    {label}
+                  </option>
+                );
+              })}
+            </select>
+            <p className="mt-1 text-xs text-muted-foreground">
+              30-minute consultation. I'll confirm by email.
+            </p>
+          </div>
         </div>
 
         <div>
