@@ -2,3 +2,6 @@ project_id = "hstvbmhxnljxafppkkbs"
 
 [functions.daily-concept]
 verify_jwt = false
+
+[functions.create-consultation]
+verify_jwt = false
