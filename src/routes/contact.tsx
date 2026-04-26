@@ -50,21 +50,42 @@ const schema = z.object({
 });
 
 // Default the picker to tomorrow at 5pm local
-function defaultPreferred(): string {
+const TIME_SLOTS = [
+  "09:00", "10:00", "11:00", "12:00",
+  "13:00", "14:00", "15:00", "16:00",
+  "17:00", "18:00", "19:00", "20:00",
+];
+
+function defaultDate(): Date {
   const d = new Date();
   d.setDate(d.getDate() + 1);
-  d.setHours(17, 0, 0, 0);
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+function combine(date: Date, time: string): Date {
+  const [h, m] = time.split(":").map(Number);
+  const d = new Date(date);
+  d.setHours(h, m, 0, 0);
+  return d;
 }
 
 function Contact() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
+  const [date, setDate] = useState<Date | undefined>(defaultDate());
+  const [time, setTime] = useState<string>("17:00");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
+
+    if (!date) {
+      setError("Please pick a date.");
+      return;
+    }
+    const preferred = combine(date, time);
+
     const formData = new FormData(e.currentTarget);
     const parsed = schema.safeParse({
       name: formData.get("name"),
@@ -72,7 +93,7 @@ function Contact() {
       phone: formData.get("phone") || "",
       subject_area: formData.get("subject_area") || "",
       message: formData.get("message"),
-      preferred_at: formData.get("preferred_at"),
+      preferred_at: preferred.toISOString(),
     });
 
     if (!parsed.success) {
@@ -89,7 +110,6 @@ function Contact() {
       message: parsed.data.message,
     };
 
-    // 1) Save submission to database
     const { error: dbError } = await supabase.from("contact_submissions").insert(payload);
     if (dbError) {
       setStatus("error");
@@ -97,13 +117,10 @@ function Contact() {
       return;
     }
 
-    // 2) Create a Google Calendar event for the consultation
-    const preferredIso = new Date(parsed.data.preferred_at).toISOString();
     const { error: fnError } = await supabase.functions.invoke("create-consultation", {
-      body: { ...payload, preferred_at: preferredIso },
+      body: { ...payload, preferred_at: parsed.data.preferred_at },
     });
     if (fnError) {
-      // Submission saved but calendar failed — still treat as partial success
       setStatus("success");
       setError("Message received, but I couldn't auto-book the slot. I'll reach out to confirm.");
       (e.target as HTMLFormElement).reset();
@@ -112,6 +129,8 @@ function Contact() {
 
     setStatus("success");
     (e.target as HTMLFormElement).reset();
+    setDate(defaultDate());
+    setTime("17:00");
   }
 
 
