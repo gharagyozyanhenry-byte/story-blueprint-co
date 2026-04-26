@@ -230,7 +230,7 @@ function Contact() {
 
           <div>
             <label className="mb-2 block text-xs uppercase tracking-[0.18em] text-muted-foreground">
-              Preferred Time
+              Preferred Time (Glendale, PT)
             </label>
             <select
               value={time}
@@ -245,13 +245,13 @@ function Contact() {
                 });
                 return (
                   <option key={t} value={t}>
-                    {label}
+                    {label} PT
                   </option>
                 );
               })}
             </select>
             <p className="mt-1 text-xs text-muted-foreground">
-              30-minute consultation. I'll confirm by email.
+              30-minute consultation in Glendale time (Pacific). I'll confirm by email.
             </p>
           </div>
         </div>
