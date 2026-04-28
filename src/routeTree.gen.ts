@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as SubjectsRouteImport } from './routes/subjects'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as PricingRouteImport } from './routes/pricing'
@@ -20,6 +21,11 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiPublicIngestBlogRouteImport } from './routes/api/public/ingest-blog'
 
+const ToolsRoute = ToolsRouteImport.update({
+  id: '/tools',
+  path: '/tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SubjectsRoute = SubjectsRouteImport.update({
   id: '/subjects',
   path: '/subjects',
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/reviews': typeof ReviewsRoute
   '/subjects': typeof SubjectsRoute
+  '/tools': typeof ToolsRoute
   '/api/public/ingest-blog': typeof ApiPublicIngestBlogRoute
 }
 export interface FileRoutesByTo {
@@ -93,6 +100,7 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/reviews': typeof ReviewsRoute
   '/subjects': typeof SubjectsRoute
+  '/tools': typeof ToolsRoute
   '/api/public/ingest-blog': typeof ApiPublicIngestBlogRoute
 }
 export interface FileRoutesById {
@@ -106,6 +114,7 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/reviews': typeof ReviewsRoute
   '/subjects': typeof SubjectsRoute
+  '/tools': typeof ToolsRoute
   '/api/public/ingest-blog': typeof ApiPublicIngestBlogRoute
 }
 export interface FileRouteTypes {
@@ -120,6 +129,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/reviews'
     | '/subjects'
+    | '/tools'
     | '/api/public/ingest-blog'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -132,6 +142,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/reviews'
     | '/subjects'
+    | '/tools'
     | '/api/public/ingest-blog'
   id:
     | '__root__'
@@ -144,6 +155,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/reviews'
     | '/subjects'
+    | '/tools'
     | '/api/public/ingest-blog'
   fileRoutesById: FileRoutesById
 }
@@ -157,11 +169,19 @@ export interface RootRouteChildren {
   PricingRoute: typeof PricingRoute
   ReviewsRoute: typeof ReviewsRoute
   SubjectsRoute: typeof SubjectsRoute
+  ToolsRoute: typeof ToolsRoute
   ApiPublicIngestBlogRoute: typeof ApiPublicIngestBlogRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tools': {
+      id: '/tools'
+      path: '/tools'
+      fullPath: '/tools'
+      preLoaderRoute: typeof ToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/subjects': {
       id: '/subjects'
       path: '/subjects'
@@ -245,6 +265,7 @@ const rootRouteChildren: RootRouteChildren = {
   PricingRoute: PricingRoute,
   ReviewsRoute: ReviewsRoute,
   SubjectsRoute: SubjectsRoute,
+  ToolsRoute: ToolsRoute,
   ApiPublicIngestBlogRoute: ApiPublicIngestBlogRoute,
 }
 export const routeTree = rootRouteImport
