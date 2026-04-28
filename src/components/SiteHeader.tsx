@@ -8,6 +8,7 @@ const navLinks = [
   { to: "/reviews", label: "Reviews" },
   { to: "/pricing", label: "Pricing" },
   { to: "/grants", label: "Grants" },
+  { to: "/blog", label: "Blog" },
 ] as const;
 
 export function SiteHeader() {
