@@ -18,6 +18,7 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as ApproachRouteImport } from './routes/approach'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiPublicIngestBlogRouteImport } from './routes/api/public/ingest-blog'
 
 const SubjectsRoute = SubjectsRouteImport.update({
   id: '/subjects',
@@ -64,6 +65,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicIngestBlogRoute = ApiPublicIngestBlogRouteImport.update({
+  id: '/api/public/ingest-blog',
+  path: '/api/public/ingest-blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/reviews': typeof ReviewsRoute
   '/subjects': typeof SubjectsRoute
+  '/api/public/ingest-blog': typeof ApiPublicIngestBlogRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/reviews': typeof ReviewsRoute
   '/subjects': typeof SubjectsRoute
+  '/api/public/ingest-blog': typeof ApiPublicIngestBlogRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,6 +106,7 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/reviews': typeof ReviewsRoute
   '/subjects': typeof SubjectsRoute
+  '/api/public/ingest-blog': typeof ApiPublicIngestBlogRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/reviews'
     | '/subjects'
+    | '/api/public/ingest-blog'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/reviews'
     | '/subjects'
+    | '/api/public/ingest-blog'
   id:
     | '__root__'
     | '/'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/reviews'
     | '/subjects'
+    | '/api/public/ingest-blog'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -145,6 +157,7 @@ export interface RootRouteChildren {
   PricingRoute: typeof PricingRoute
   ReviewsRoute: typeof ReviewsRoute
   SubjectsRoute: typeof SubjectsRoute
+  ApiPublicIngestBlogRoute: typeof ApiPublicIngestBlogRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -212,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/ingest-blog': {
+      id: '/api/public/ingest-blog'
+      path: '/api/public/ingest-blog'
+      fullPath: '/api/public/ingest-blog'
+      preLoaderRoute: typeof ApiPublicIngestBlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -225,6 +245,7 @@ const rootRouteChildren: RootRouteChildren = {
   PricingRoute: PricingRoute,
   ReviewsRoute: ReviewsRoute,
   SubjectsRoute: SubjectsRoute,
+  ApiPublicIngestBlogRoute: ApiPublicIngestBlogRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
