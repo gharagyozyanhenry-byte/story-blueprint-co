@@ -32,11 +32,17 @@ function About() {
       <div className="grid items-start gap-16 md:grid-cols-[1fr_1.4fr]">
         <div className="relative">
           <div className="aspect-[3/4] overflow-hidden rounded-xl border border-gold/40 bg-gradient-to-br from-surface to-card">
-            <div className="flex h-full flex-col items-center justify-center gap-3 text-center">
-              <span className="font-display text-7xl text-gold/40">∑</span>
-              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Your Photo Here</p>
-              <p className="text-sm text-muted-foreground">Math Expert</p>
-            </div>
+            <img
+              src={misakPhoto}
+              alt="Misak Gharagyozyan, MBA — math tutor and business owner in Glendale"
+              className="h-full w-full object-cover"
+              loading="eager"
+            />
+          </div>
+          <div className="mt-6 text-center">
+            <p className="font-display text-2xl text-foreground">Misak Gharagyozyan, <span className="text-gold">MBA</span></p>
+            <p className="mt-1 text-sm uppercase tracking-[0.2em] text-muted-foreground">Business Owner · Math Educator</p>
+            <p className="mt-4 italic-display text-lg text-gold">"Where numbers meet ambition, success becomes inevitable."</p>
           </div>
         </div>
 
