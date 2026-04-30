@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { SectionLabel } from "@/components/SectionLabel";
 import { supabase } from "@/integrations/supabase/client";
+import { SITE_URL, canonical } from "@/lib/seo";
 
 export const Route = createFileRoute("/blog")({
   head: () => ({
@@ -19,9 +20,10 @@ export const Route = createFileRoute("/blog")({
         content: "What's happening in the math universe — breakthroughs, beautiful ideas, and resources for math enthusiasts.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: SITE_URL + "/blog" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/blog" }],
+    links: canonical("/blog"),
   }),
   component: BlogPage,
 });
