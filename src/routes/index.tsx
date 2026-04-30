@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { SectionLabel } from "@/components/SectionLabel";
 import { supabase } from "@/integrations/supabase/client";
 import heroClassroom from "@/assets/hero-classroom.jpg";
+import { SITE_URL, canonical } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -17,6 +18,49 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content: "Private math tutoring with a dedicated educator who turns frustration into confidence.",
+      },
+      { property: "og:url", content: SITE_URL + "/" },
+    ],
+    links: canonical("/"),
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "EducationalOrganization",
+          "@id": SITE_URL + "/#org",
+          name: "MathMind Tutoring",
+          url: SITE_URL,
+          description:
+            "Private math tutoring in Glendale, California — algebra, geometry, trigonometry, pre-calculus, calculus, and exam prep.",
+          areaServed: { "@type": "City", name: "Glendale, CA" },
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Glendale",
+            addressRegion: "CA",
+            addressCountry: "US",
+          },
+          founder: { "@type": "Person", name: "Misak Gharagyozyan" },
+          sameAs: [],
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          name: "MathMind Tutoring",
+          image: SITE_URL + "/og-default.jpg",
+          url: SITE_URL,
+          priceRange: "$55–$75",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Glendale",
+            addressRegion: "CA",
+            addressCountry: "US",
+          },
+          areaServed: "Glendale, CA",
+        }),
       },
     ],
   }),

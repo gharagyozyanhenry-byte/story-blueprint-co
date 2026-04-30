@@ -1,19 +1,24 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/SectionLabel";
 import misakPhoto from "@/assets/misak-gharagyozyan.jpeg";
+import { SITE_URL, canonical } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About — MathMind Tutoring" },
+      { title: "About Misak Gharagyozyan, MBA — MathMind Tutoring" },
       {
         name: "description",
         content:
-          "Years of classroom and one-on-one tutoring experience helping Glendale students master math at every level.",
+          "Meet Misak Gharagyozyan, MBA — founder of MathMind. Years of classroom and one-on-one tutoring experience helping Glendale students master math at every level.",
       },
-      { property: "og:title", content: "About — MathMind Tutoring" },
+      { property: "og:title", content: "About Misak Gharagyozyan, MBA — MathMind Tutoring" },
       { property: "og:description", content: "A guide who gets it — patient, personalized math instruction." },
+      { property: "og:image", content: SITE_URL + "/og-about.jpg" },
+      { name: "twitter:image", content: SITE_URL + "/og-about.jpg" },
+      { property: "og:url", content: SITE_URL + "/about" },
     ],
+    links: canonical("/about"),
   }),
   component: About,
 });
