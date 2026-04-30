@@ -9,18 +9,22 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
+import { SITE_URL, canonical } from "@/lib/seo";
+
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — MathMind Tutoring" },
+      { title: "Contact MathMind — Book a Free Math Tutoring Consultation" },
       {
         name: "description",
         content:
           "Book a free 30-minute math tutoring consultation in Glendale, CA. Response within 24 hours.",
       },
-      { property: "og:title", content: "Contact — MathMind Tutoring" },
+      { property: "og:title", content: "Contact MathMind — Free Consultation" },
       { property: "og:description", content: "Ready to start? Book a free consult." },
+      { property: "og:url", content: SITE_URL + "/contact" },
     ],
+    links: canonical("/contact"),
   }),
   component: Contact,
 });

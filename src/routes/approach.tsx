@@ -1,18 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/SectionLabel";
+import { SITE_URL, canonical } from "@/lib/seo";
 
 export const Route = createFileRoute("/approach")({
   head: () => ({
     meta: [
-      { title: "Approach — MathMind Tutoring" },
+      { title: "Our Tutoring Approach — 4 Steps to Math Mastery | MathMind" },
       {
         name: "description",
         content:
           "Four steps to mastery: diagnose, personalize, practice, succeed. A structured tutoring process built on real understanding.",
       },
-      { property: "og:title", content: "Approach — MathMind Tutoring" },
+      { property: "og:title", content: "Our Tutoring Approach | MathMind" },
       { property: "og:description", content: "Four steps to mastery — a structured tutoring process." },
+      { property: "og:url", content: SITE_URL + "/approach" },
     ],
+    links: canonical("/approach"),
   }),
   component: Approach,
 });

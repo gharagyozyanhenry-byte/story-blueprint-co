@@ -1,16 +1,59 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/SectionLabel";
+import { SITE_URL, canonical } from "@/lib/seo";
 
 export const Route = createFileRoute("/reviews")({
   head: () => ({
     meta: [
-      { title: "Reviews — MathMind Tutoring" },
+      { title: "Student & Parent Reviews — MathMind Tutoring, Glendale CA" },
       {
         name: "description",
-        content: "What students and parents in Glendale say about working with MathMind tutoring.",
+        content:
+          "What students and parents in Glendale say about working with MathMind tutoring — real stories, real results.",
       },
       { property: "og:title", content: "Reviews — MathMind Tutoring" },
       { property: "og:description", content: "Real stories from students and parents." },
+      { property: "og:url", content: SITE_URL + "/reviews" },
+    ],
+    links: canonical("/reviews"),
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          name: "MathMind Tutoring",
+          url: SITE_URL,
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: "5",
+            reviewCount: "3",
+          },
+          review: [
+            {
+              "@type": "Review",
+              reviewRating: { "@type": "Rating", ratingValue: "5" },
+              author: { "@type": "Person", name: "Alex K." },
+              reviewBody:
+                "I was failing Pre-Calc before I started. After just a few sessions everything clicked. I ended up with a B+.",
+            },
+            {
+              "@type": "Review",
+              reviewRating: { "@type": "Rating", ratingValue: "5" },
+              author: { "@type": "Person", name: "Maria P." },
+              reviewBody:
+                "My son dreaded math. Now he actually looks forward to his sessions. The patience and clear explanations made all the difference.",
+            },
+            {
+              "@type": "Review",
+              reviewRating: { "@type": "Rating", ratingValue: "5" },
+              author: { "@type": "Person", name: "Jordan S." },
+              reviewBody:
+                "Got a 4 on the AP Calculus exam after two months of tutoring. The way concepts were broken down made everything intuitive.",
+            },
+          ],
+        }),
+      },
     ],
   }),
   component: Reviews,

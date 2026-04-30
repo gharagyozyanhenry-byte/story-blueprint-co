@@ -1,18 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/SectionLabel";
+import { SITE_URL, canonical } from "@/lib/seo";
 
 export const Route = createFileRoute("/subjects")({
   head: () => ({
     meta: [
-      { title: "Subjects — MathMind Tutoring" },
+      { title: "Math Subjects We Teach — Algebra to Calculus | MathMind" },
       {
         name: "description",
         content:
-          "Algebra, geometry, trigonometry, pre-calculus, calculus, statistics and more — every level taught with clarity.",
+          "Algebra, geometry, trigonometry, pre-calculus, calculus, statistics and more — every level taught with clarity in Glendale, CA.",
       },
-      { property: "og:title", content: "Subjects — MathMind Tutoring" },
+      { property: "og:title", content: "Math Subjects We Teach | MathMind" },
       { property: "og:description", content: "Every level, every topic — math built from the ground up." },
+      { property: "og:url", content: SITE_URL + "/subjects" },
     ],
+    links: canonical("/subjects"),
   }),
   component: Subjects,
 });

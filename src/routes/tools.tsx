@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/SectionLabel";
+import { SITE_URL, canonical } from "@/lib/seo";
 
 export const Route = createFileRoute("/tools")({
   head: () => ({
@@ -17,8 +18,9 @@ export const Route = createFileRoute("/tools")({
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Math Tools & Calculators | MathMind" },
       { name: "twitter:description", content: "10 free math calculators in one place." },
+      { property: "og:url", content: SITE_URL + "/tools" },
     ],
-    links: [{ rel: "canonical", href: "/tools" }],
+    links: canonical("/tools"),
     scripts: [
       {
         type: "application/ld+json",

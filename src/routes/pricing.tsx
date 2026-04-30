@@ -1,19 +1,57 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/SectionLabel";
+import { SITE_URL, canonical } from "@/lib/seo";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Pricing — MathMind Tutoring" },
+      { title: "Math Tutoring Pricing — Glendale, CA | MathMind" },
       {
         name: "description",
         content:
           "Simple, transparent rates. Single sessions $65/hr, monthly packages $55/hr, exam prep $75/hr. First consultation is free.",
       },
-      { property: "og:title", content: "Pricing — MathMind Tutoring" },
+      { property: "og:title", content: "Math Tutoring Pricing | MathMind" },
       {
         property: "og:description",
         content: "Single sessions, monthly packages, and exam prep — first consult always free.",
+      },
+      { property: "og:url", content: SITE_URL + "/pricing" },
+    ],
+    links: canonical("/pricing"),
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "How much does math tutoring cost?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Single sessions are $65/hour, monthly packages are $55/hour (8 sessions/month), and exam prep is $75/hour. The first consultation is free.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "How long is each session?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "All sessions are 60 minutes and can be held in-person in Glendale, CA or online.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Is the first consultation really free?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Yes — the first 30-minute consultation is completely free with no obligation.",
+              },
+            },
+          ],
+        }),
       },
     ],
   }),

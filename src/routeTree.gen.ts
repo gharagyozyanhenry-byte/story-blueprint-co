@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as SubjectsRouteImport } from './routes/subjects'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as GrantsRouteImport } from './routes/grants'
@@ -29,6 +31,16 @@ const ToolsRoute = ToolsRouteImport.update({
 const SubjectsRoute = SubjectsRouteImport.update({
   id: '/subjects',
   path: '/subjects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReviewsRoute = ReviewsRouteImport.update({
@@ -86,6 +98,8 @@ export interface FileRoutesByFullPath {
   '/grants': typeof GrantsRoute
   '/pricing': typeof PricingRoute
   '/reviews': typeof ReviewsRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subjects': typeof SubjectsRoute
   '/tools': typeof ToolsRoute
   '/api/public/ingest-blog': typeof ApiPublicIngestBlogRoute
@@ -99,6 +113,8 @@ export interface FileRoutesByTo {
   '/grants': typeof GrantsRoute
   '/pricing': typeof PricingRoute
   '/reviews': typeof ReviewsRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subjects': typeof SubjectsRoute
   '/tools': typeof ToolsRoute
   '/api/public/ingest-blog': typeof ApiPublicIngestBlogRoute
@@ -113,6 +129,8 @@ export interface FileRoutesById {
   '/grants': typeof GrantsRoute
   '/pricing': typeof PricingRoute
   '/reviews': typeof ReviewsRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subjects': typeof SubjectsRoute
   '/tools': typeof ToolsRoute
   '/api/public/ingest-blog': typeof ApiPublicIngestBlogRoute
@@ -128,6 +146,8 @@ export interface FileRouteTypes {
     | '/grants'
     | '/pricing'
     | '/reviews'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/subjects'
     | '/tools'
     | '/api/public/ingest-blog'
@@ -141,6 +161,8 @@ export interface FileRouteTypes {
     | '/grants'
     | '/pricing'
     | '/reviews'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/subjects'
     | '/tools'
     | '/api/public/ingest-blog'
@@ -154,6 +176,8 @@ export interface FileRouteTypes {
     | '/grants'
     | '/pricing'
     | '/reviews'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/subjects'
     | '/tools'
     | '/api/public/ingest-blog'
@@ -168,6 +192,8 @@ export interface RootRouteChildren {
   GrantsRoute: typeof GrantsRoute
   PricingRoute: typeof PricingRoute
   ReviewsRoute: typeof ReviewsRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubjectsRoute: typeof SubjectsRoute
   ToolsRoute: typeof ToolsRoute
   ApiPublicIngestBlogRoute: typeof ApiPublicIngestBlogRoute
@@ -187,6 +213,20 @@ declare module '@tanstack/react-router' {
       path: '/subjects'
       fullPath: '/subjects'
       preLoaderRoute: typeof SubjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reviews': {
@@ -264,6 +304,8 @@ const rootRouteChildren: RootRouteChildren = {
   GrantsRoute: GrantsRoute,
   PricingRoute: PricingRoute,
   ReviewsRoute: ReviewsRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubjectsRoute: SubjectsRoute,
   ToolsRoute: ToolsRoute,
   ApiPublicIngestBlogRoute: ApiPublicIngestBlogRoute,

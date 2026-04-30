@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/SectionLabel";
+import { SITE_URL, canonical } from "@/lib/seo";
 
 export const Route = createFileRoute("/grants")({
   head: () => ({
@@ -19,7 +20,9 @@ export const Route = createFileRoute("/grants")({
         content:
           "Public scholarships, grants, and funding for math students in California, plus help preparing your application.",
       },
+      { property: "og:url", content: SITE_URL + "/grants" },
     ],
+    links: canonical("/grants"),
   }),
   component: GrantsPage,
 });
