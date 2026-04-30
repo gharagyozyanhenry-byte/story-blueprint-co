@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SectionLabel } from "@/components/SectionLabel";
+import misakPhoto from "@/assets/misak-gharagyozyan.jpeg";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
