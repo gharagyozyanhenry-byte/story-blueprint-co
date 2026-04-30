@@ -99,6 +99,21 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const unsub = router.subscribe("onResolved", ({ toLocation }) => {
+      if (typeof window.gtag === "function") {
+        window.gtag("event", "page_view", {
+          page_path: toLocation.pathname + toLocation.searchStr,
+          page_location: window.location.href,
+          page_title: document.title,
+        });
+      }
+    });
+    return () => unsub();
+  }, [router]);
+
   return (
     <div className="flex min-h-screen flex-col">
       <CursorTrail />
