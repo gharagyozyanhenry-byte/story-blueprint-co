@@ -31,7 +31,7 @@ export const Route = createFileRoute("/pricing")({
               name: "How much does math tutoring cost?",
               acceptedAnswer: {
                 "@type": "Answer",
-                text: "Single sessions are $65/hour, monthly packages are $55/hour (8 sessions/month), and exam prep is $75/hour. The first consultation is free.",
+                text: "Single sessions are $65/hour, monthly packages are $55/hour (8 sessions/month), and exam prep is $75/hour. The first 30-minute consultation is free.",
               },
             },
             {
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/pricing")({
               name: "How long is each session?",
               acceptedAnswer: {
                 "@type": "Answer",
-                text: "All sessions are 60 minutes and can be held in-person in Glendale, CA or online.",
+                text: "All sessions are 60 minutes and can be held in-person in Glendale, CA, throughout Greater LA, or online anywhere in the U.S.",
               },
             },
             {
@@ -48,6 +48,38 @@ export const Route = createFileRoute("/pricing")({
               acceptedAnswer: {
                 "@type": "Answer",
                 text: "Yes — the first 30-minute consultation is completely free with no obligation.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Do you offer affordable math tutoring?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Yes. Our monthly package rate of $55/hour is at the affordable end for fully one-on-one private tutoring in the Glendale and Greater LA area, where most local tutors charge $50–$120/hour.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Do you tutor adults?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Yes — we tutor adults preparing for the GED, GRE, nursing entrance exams, returning to college, or simply rebuilding math skills. All rates are the same for adult learners.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Do you offer online math tutoring?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Yes. Online sessions use a shared digital whiteboard and run at the same rates as in-person. Available to students anywhere in the United States.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "What grades and subjects do you tutor?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Every grade from 5th through 12th, plus college math (Calculus I/II/III, Linear Algebra, Differential Equations, Discrete Math, Statistics) and adult learners. Exam prep covers SAT, ACT, AP Calculus, AP Statistics, GED, and GRE Quantitative.",
               },
             },
           ],
