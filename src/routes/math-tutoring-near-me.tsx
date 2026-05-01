@@ -54,6 +54,18 @@ export const Route = createFileRoute("/math-tutoring-near-me")({
           url: SITE_URL + "/math-tutoring-near-me",
         }),
       },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqs.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }),
+      },
     ],
   }),
   component: NearMePage,
