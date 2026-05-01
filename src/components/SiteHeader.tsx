@@ -7,6 +7,7 @@ const navLinks = [
   { to: "/approach", label: "Approach" },
   { to: "/reviews", label: "Reviews" },
   { to: "/pricing", label: "Pricing" },
+  { to: "/math-tutoring-near-me", label: "Near Me" },
   { to: "/grants", label: "Grants" },
   { to: "/blog", label: "Blog" },
   { to: "/tools", label: "Tools" },
