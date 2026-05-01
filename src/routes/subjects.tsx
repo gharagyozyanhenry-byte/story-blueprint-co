@@ -59,6 +59,28 @@ const subjects = [
   },
 ];
 
+const gradeLevels = [
+  { label: "Elementary", detail: "5th grade math" },
+  { label: "Middle school", detail: "6th, 7th & 8th grade" },
+  { label: "High school", detail: "9th, 10th, 11th, 12th grade" },
+  { label: "College", detail: "Calc I/II/III, Linear Algebra, Discrete, Stats" },
+  { label: "Adult learners", detail: "Returning students & career changers" },
+  { label: "Homeschool", detail: "Curriculum support, K–12" },
+  { label: "IB & AP", detail: "IB Math AA/AI, AP Calc, AP Stats" },
+  { label: "Olympiad / AMC", detail: "Competition & enrichment track" },
+];
+
+const exams = [
+  { name: "SAT Math", body: "All four content areas with timed practice and targeted drills." },
+  { name: "ACT Math", body: "Pacing strategy plus the algebra, geometry, and trig the test rewards." },
+  { name: "AP Calculus AB & BC", body: "Concept mastery and exam strategy for a 4 or 5." },
+  { name: "AP Statistics", body: "Inference, design, and FRQ writing." },
+  { name: "GED Math", body: "Adult-friendly review from arithmetic through algebra and geometry." },
+  { name: "GRE Quantitative", body: "Quant comparison, problem-solving, and data interpretation." },
+  { name: "Nursing entrance (TEAS, HESI)", body: "The math sections demystified for adult learners." },
+  { name: "College placement", body: "Avoid remedial math — pass the placement test the first time." },
+];
+
 function Subjects() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-24">
@@ -67,6 +89,9 @@ function Subjects() {
         <h1 className="font-display text-4xl leading-tight md:text-6xl">
           Every level, <span className="italic-display">every topic</span>
         </h1>
+        <p className="mt-6 text-muted-foreground">
+          From 5th-grade fractions to college calculus, SAT prep to GED review.
+        </p>
       </div>
 
       <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -83,6 +108,40 @@ function Subjects() {
             <p className="mt-6 text-xs uppercase tracking-[0.2em] text-accent">{s.level}</p>
           </div>
         ))}
+      </div>
+
+      <div className="mt-24">
+        <div className="text-center">
+          <SectionLabel>Grade levels &amp; learners</SectionLabel>
+          <h2 className="font-display mt-4 text-3xl tracking-tight md:text-4xl">
+            From 5th grade to <span className="italic-display">graduate prep</span>
+          </h2>
+        </div>
+        <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {gradeLevels.map((g) => (
+            <div key={g.label} className="rounded-xl border border-border bg-card/40 p-5">
+              <p className="font-display text-lg text-gold">{g.label}</p>
+              <p className="mt-2 text-sm text-muted-foreground">{g.detail}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-24">
+        <div className="text-center">
+          <SectionLabel>Exam prep</SectionLabel>
+          <h2 className="font-display mt-4 text-3xl tracking-tight md:text-4xl">
+            Standardized &amp; placement tests
+          </h2>
+        </div>
+        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {exams.map((e) => (
+            <div key={e.name} className="rounded-xl border border-border bg-card/40 p-6">
+              <h3 className="font-display text-lg">{e.name}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{e.body}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
