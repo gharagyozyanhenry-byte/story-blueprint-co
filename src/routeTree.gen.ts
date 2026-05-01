@@ -15,6 +15,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as MathTutoringNearMeRouteImport } from './routes/math-tutoring-near-me'
 import { Route as GrantsRouteImport } from './routes/grants'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BlogRouteImport } from './routes/blog'
@@ -51,6 +52,11 @@ const ReviewsRoute = ReviewsRouteImport.update({
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MathTutoringNearMeRoute = MathTutoringNearMeRouteImport.update({
+  id: '/math-tutoring-near-me',
+  path: '/math-tutoring-near-me',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GrantsRoute = GrantsRouteImport.update({
@@ -96,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/grants': typeof GrantsRoute
+  '/math-tutoring-near-me': typeof MathTutoringNearMeRoute
   '/pricing': typeof PricingRoute
   '/reviews': typeof ReviewsRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -111,6 +118,7 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/grants': typeof GrantsRoute
+  '/math-tutoring-near-me': typeof MathTutoringNearMeRoute
   '/pricing': typeof PricingRoute
   '/reviews': typeof ReviewsRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -127,6 +135,7 @@ export interface FileRoutesById {
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/grants': typeof GrantsRoute
+  '/math-tutoring-near-me': typeof MathTutoringNearMeRoute
   '/pricing': typeof PricingRoute
   '/reviews': typeof ReviewsRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -144,6 +153,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/contact'
     | '/grants'
+    | '/math-tutoring-near-me'
     | '/pricing'
     | '/reviews'
     | '/robots.txt'
@@ -159,6 +169,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/contact'
     | '/grants'
+    | '/math-tutoring-near-me'
     | '/pricing'
     | '/reviews'
     | '/robots.txt'
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/contact'
     | '/grants'
+    | '/math-tutoring-near-me'
     | '/pricing'
     | '/reviews'
     | '/robots.txt'
@@ -190,6 +202,7 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRoute
   ContactRoute: typeof ContactRoute
   GrantsRoute: typeof GrantsRoute
+  MathTutoringNearMeRoute: typeof MathTutoringNearMeRoute
   PricingRoute: typeof PricingRoute
   ReviewsRoute: typeof ReviewsRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
@@ -241,6 +254,13 @@ declare module '@tanstack/react-router' {
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/math-tutoring-near-me': {
+      id: '/math-tutoring-near-me'
+      path: '/math-tutoring-near-me'
+      fullPath: '/math-tutoring-near-me'
+      preLoaderRoute: typeof MathTutoringNearMeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/grants': {
@@ -302,6 +322,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRoute,
   ContactRoute: ContactRoute,
   GrantsRoute: GrantsRoute,
+  MathTutoringNearMeRoute: MathTutoringNearMeRoute,
   PricingRoute: PricingRoute,
   ReviewsRoute: ReviewsRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
