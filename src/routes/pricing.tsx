@@ -179,6 +179,32 @@ function Pricing() {
           </div>
         ))}
       </div>
+
+      <div className="mx-auto mt-24 max-w-3xl">
+        <div className="text-center">
+          <SectionLabel>Common questions</SectionLabel>
+          <h2 className="font-display mt-4 text-3xl tracking-tight md:text-4xl">
+            What students &amp; parents ask
+          </h2>
+        </div>
+        <div className="mt-10 space-y-4">
+          {[
+            { q: "How much does math tutoring cost?", a: "Single sessions are $65/hour, monthly packages are $55/hour (8 sessions/month), and exam prep is $75/hour. The first 30-minute consultation is free." },
+            { q: "Do you offer affordable math tutoring?", a: "Yes — our $55/hour monthly rate is at the affordable end for fully one-on-one private tutoring in the Glendale and Greater LA area." },
+            { q: "Do you tutor adults?", a: "Yes. We tutor adults preparing for the GED, GRE, nursing entrance exams, returning to college, or simply rebuilding math skills. Same rates apply." },
+            { q: "Do you offer online math tutoring?", a: "Yes — online sessions use a shared digital whiteboard and run at the same rates as in-person. Available nationwide." },
+            { q: "Is the first consult really free?", a: "Yes — the first 30-minute consult is completely free with no obligation." },
+            { q: "What grades and subjects do you tutor?", a: "5th through 12th grade, college math (Calculus I/II/III, Linear Algebra, Discrete Math, Statistics), and adult learners. Exam prep covers SAT, ACT, AP, GED, and GRE." },
+          ].map((f) => (
+            <details key={f.q} className="group rounded-xl border border-border bg-card/40 p-6 open:border-gold/50">
+              <summary className="cursor-pointer list-none font-display text-lg transition group-open:text-gold">
+                {f.q}
+              </summary>
+              <p className="mt-3 text-sm text-muted-foreground">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
