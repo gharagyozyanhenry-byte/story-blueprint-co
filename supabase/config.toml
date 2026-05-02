@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.create-consultation]
 verify_jwt = false
+
+[functions.ai-math-tutor]
+verify_jwt = true

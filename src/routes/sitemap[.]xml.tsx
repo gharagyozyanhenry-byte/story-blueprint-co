@@ -13,6 +13,7 @@ const ROUTES = [
   { path: "/blog", priority: "0.8", changefreq: "weekly" },
   { path: "/contact", priority: "0.9", changefreq: "monthly" },
   { path: "/math-tutoring-near-me", priority: "0.95", changefreq: "monthly" },
+  { path: "/ai-math-tutor", priority: "0.95", changefreq: "weekly" },
 ];
 
 export const Route = createFileRoute("/sitemap.xml")({
