@@ -19,7 +19,9 @@ import { Route as MathTutoringNearMeRouteImport } from './routes/math-tutoring-n
 import { Route as GrantsRouteImport } from './routes/grants'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ApproachRouteImport } from './routes/approach'
+import { Route as AiMathTutorRouteImport } from './routes/ai-math-tutor'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiPublicIngestBlogRouteImport } from './routes/api/public/ingest-blog'
@@ -74,9 +76,19 @@ const BlogRoute = BlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApproachRoute = ApproachRouteImport.update({
   id: '/approach',
   path: '/approach',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiMathTutorRoute = AiMathTutorRouteImport.update({
+  id: '/ai-math-tutor',
+  path: '/ai-math-tutor',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -98,7 +110,9 @@ const ApiPublicIngestBlogRoute = ApiPublicIngestBlogRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/ai-math-tutor': typeof AiMathTutorRoute
   '/approach': typeof ApproachRoute
+  '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/grants': typeof GrantsRoute
@@ -114,7 +128,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/ai-math-tutor': typeof AiMathTutorRoute
   '/approach': typeof ApproachRoute
+  '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/grants': typeof GrantsRoute
@@ -131,7 +147,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/ai-math-tutor': typeof AiMathTutorRoute
   '/approach': typeof ApproachRoute
+  '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/grants': typeof GrantsRoute
@@ -149,7 +167,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/ai-math-tutor'
     | '/approach'
+    | '/auth'
     | '/blog'
     | '/contact'
     | '/grants'
@@ -165,7 +185,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/ai-math-tutor'
     | '/approach'
+    | '/auth'
     | '/blog'
     | '/contact'
     | '/grants'
@@ -181,7 +203,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/ai-math-tutor'
     | '/approach'
+    | '/auth'
     | '/blog'
     | '/contact'
     | '/grants'
@@ -198,7 +222,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AiMathTutorRoute: typeof AiMathTutorRoute
   ApproachRoute: typeof ApproachRoute
+  AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRoute
   ContactRoute: typeof ContactRoute
   GrantsRoute: typeof GrantsRoute
@@ -284,11 +310,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/approach': {
       id: '/approach'
       path: '/approach'
       fullPath: '/approach'
       preLoaderRoute: typeof ApproachRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai-math-tutor': {
+      id: '/ai-math-tutor'
+      path: '/ai-math-tutor'
+      fullPath: '/ai-math-tutor'
+      preLoaderRoute: typeof AiMathTutorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -318,7 +358,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AiMathTutorRoute: AiMathTutorRoute,
   ApproachRoute: ApproachRoute,
+  AuthRoute: AuthRoute,
   BlogRoute: BlogRoute,
   ContactRoute: ContactRoute,
   GrantsRoute: GrantsRoute,
