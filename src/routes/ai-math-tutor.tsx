@@ -1,6 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { SectionLabel } from "@/components/SectionLabel";
 import { MathMarkdown } from "@/components/MathMarkdown";
 import { SITE_URL, canonical } from "@/lib/seo";
@@ -104,30 +103,11 @@ const EXAMPLES = [
 ];
 
 function AiMathTutorPage() {
-  const navigate = useNavigate();
-  const [authChecked, setAuthChecked] = useState(false);
-  const [authed, setAuthed] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    let mounted = true;
-    supabase.auth.getSession().then(({ data }) => {
-      if (!mounted) return;
-      setAuthed(!!data.session);
-      setAuthChecked(true);
-    });
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      setAuthed(!!session);
-    });
-    return () => {
-      mounted = false;
-      sub.subscription.unsubscribe();
-    };
-  }, []);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -158,20 +138,10 @@ function AiMathTutorPage() {
     };
 
     try {
-      const { data: sessionData } = await supabase.auth.getSession();
-      const token = sessionData.session?.access_token;
-      if (!token) {
-        navigate({ to: "/auth" });
-        return;
-      }
-
       const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-math-tutor`;
       const resp = await fetch(url, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: [...messages, userMsg].map((m) => ({ role: m.role, content: m.content })),
         }),
@@ -218,51 +188,6 @@ function AiMathTutorPage() {
       setLoading(false);
     }
   };
-
-  if (!authChecked) {
-    return (
-      <div className="flex min-h-[60vh] items-center justify-center text-muted-foreground">
-        Loading…
-      </div>
-    );
-  }
-
-  if (!authed) {
-    return (
-      <div className="bg-background">
-        {/* SEO content visible to crawlers + signed-out visitors */}
-        <section className="border-b border-border/60">
-          <div className="mx-auto max-w-4xl px-6 py-24">
-            <SectionLabel>Free AI Math Tutor</SectionLabel>
-            <h1 className="font-display mt-4 text-5xl tracking-tight md:text-6xl">
-              Your free <span className="italic-display">AI math tutor</span> — step by step
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
-              Type any math problem — algebra, calculus, geometry, statistics — and get a clear,
-              tutor-style explanation. Powered by Google&apos;s Gemini AI. Always free with a quick
-              account.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                to="/auth"
-                className="inline-flex items-center rounded-md bg-gold px-6 py-3 text-sm font-medium text-gold-foreground transition hover:opacity-90"
-              >
-                Create free account
-              </Link>
-              <Link
-                to="/auth"
-                className="inline-flex items-center rounded-md border border-border px-6 py-3 text-sm font-medium transition hover:border-gold"
-              >
-                Sign in
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        <SeoContent />
-      </div>
-    );
-  }
 
   return (
     <div className="bg-background">
