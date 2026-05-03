@@ -162,6 +162,7 @@ function ToolsPage() {
         </Link>
       </section>
 
+      <section className="mx-auto max-w-6xl px-6 py-20">
         <SectionLabel>The toolkit</SectionLabel>
         <h2 className="font-display mt-4 text-3xl tracking-tight md:text-4xl">Pick the right tool for the job</h2>
 
