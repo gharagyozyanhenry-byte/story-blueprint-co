@@ -103,30 +103,11 @@ const EXAMPLES = [
 ];
 
 function AiMathTutorPage() {
-  const navigate = useNavigate();
-  const [authChecked, setAuthChecked] = useState(false);
-  const [authed, setAuthed] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    let mounted = true;
-    supabase.auth.getSession().then(({ data }) => {
-      if (!mounted) return;
-      setAuthed(!!data.session);
-      setAuthChecked(true);
-    });
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      setAuthed(!!session);
-    });
-    return () => {
-      mounted = false;
-      sub.subscription.unsubscribe();
-    };
-  }, []);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -157,20 +138,10 @@ function AiMathTutorPage() {
     };
 
     try {
-      const { data: sessionData } = await supabase.auth.getSession();
-      const token = sessionData.session?.access_token;
-      if (!token) {
-        navigate({ to: "/auth" });
-        return;
-      }
-
       const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-math-tutor`;
       const resp = await fetch(url, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: [...messages, userMsg].map((m) => ({ role: m.role, content: m.content })),
         }),
