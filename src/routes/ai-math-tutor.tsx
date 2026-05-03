@@ -189,52 +189,6 @@ function AiMathTutorPage() {
     }
   };
 
-  if (!authChecked) {
-    return (
-      <div className="flex min-h-[60vh] items-center justify-center text-muted-foreground">
-        Loading…
-      </div>
-    );
-  }
-
-  if (!authed) {
-    return (
-      <div className="bg-background">
-        {/* SEO content visible to crawlers + signed-out visitors */}
-        <section className="border-b border-border/60">
-          <div className="mx-auto max-w-4xl px-6 py-24">
-            <SectionLabel>Free AI Math Tutor</SectionLabel>
-            <h1 className="font-display mt-4 text-5xl tracking-tight md:text-6xl">
-              Your free <span className="italic-display">AI math tutor</span> — step by step
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
-              Type any math problem — algebra, calculus, geometry, statistics — and get a clear,
-              tutor-style explanation. Powered by Google&apos;s Gemini AI. Always free with a quick
-              account.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                to="/auth"
-                className="inline-flex items-center rounded-md bg-gold px-6 py-3 text-sm font-medium text-gold-foreground transition hover:opacity-90"
-              >
-                Create free account
-              </Link>
-              <Link
-                to="/auth"
-                className="inline-flex items-center rounded-md border border-border px-6 py-3 text-sm font-medium transition hover:border-gold"
-              >
-                Sign in
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        <SeoContent />
-      </div>
-    );
-  }
-
-  return (
     <div className="bg-background">
       <section className="border-b border-border/60">
         <div className="mx-auto max-w-4xl px-6 pt-16 pb-8">
