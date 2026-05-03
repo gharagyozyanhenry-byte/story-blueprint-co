@@ -8,7 +8,6 @@ const navLinks = [
   { to: "/reviews", label: "Reviews" },
   { to: "/pricing", label: "Pricing" },
   { to: "/math-tutoring-near-me", label: "Near Me" },
-  { to: "/ai-math-tutor", label: "AI Tutor" },
   { to: "/grants", label: "Grants" },
   { to: "/blog", label: "Blog" },
   { to: "/tools", label: "Tools" },
