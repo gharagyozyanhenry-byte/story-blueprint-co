@@ -189,6 +189,7 @@ function AiMathTutorPage() {
     }
   };
 
+  return (
     <div className="bg-background">
       <section className="border-b border-border/60">
         <div className="mx-auto max-w-4xl px-6 pt-16 pb-8">
