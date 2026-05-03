@@ -138,7 +138,30 @@ function ToolsPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 py-20">
+      <section className="mx-auto max-w-6xl px-6 pt-20">
+        <SectionLabel>Featured — Built by us</SectionLabel>
+        <Link
+          to="/ai-math-tutor"
+          className="group mt-6 flex flex-col gap-3 rounded-xl border border-gold/40 bg-gradient-to-br from-card to-surface/40 p-8 transition hover:border-gold md:flex-row md:items-center md:justify-between"
+        >
+          <div>
+            <div className="flex items-center gap-3">
+              <h3 className="font-display text-2xl transition group-hover:text-gold">
+                Free AI Math Tutor
+              </h3>
+              <span className="rounded-full border border-gold/60 bg-gold/10 px-2 py-1 text-[10px] uppercase tracking-[0.18em] text-gold">
+                Free · No signup
+              </span>
+            </div>
+            <p className="mt-3 max-w-2xl text-sm text-muted-foreground">
+              Type any math problem — algebra, calculus, geometry, statistics — and get a clear,
+              tutor-style step-by-step explanation. Powered by Google Gemini.
+            </p>
+          </div>
+          <span className="text-xs uppercase tracking-[0.18em] text-gold">Open tutor →</span>
+        </Link>
+      </section>
+
         <SectionLabel>The toolkit</SectionLabel>
         <h2 className="font-display mt-4 text-3xl tracking-tight md:text-4xl">Pick the right tool for the job</h2>
 
